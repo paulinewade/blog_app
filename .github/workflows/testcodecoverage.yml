@@ -1,10 +1,11 @@
-name: Test and Code Coverage e.g., Simplecov
+name: Test
 
 on:
   push:
     branches:
-      - main
       - dev
+      - test
+      - main
 
 jobs:
   build:
@@ -32,9 +33,10 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: ${{ env.RUBY_VERSION }}
+#       ruby-version: ${{ env.RUBY_VERSION }}
+        ruby-version: 3.1.2
         bundler-cache: true
-    - uses: borales/actions-yarn@v2.0.0
+    - uses: borales/actions-yarn@v3.0.0
       with:
         cmd: install
     - name: Install PostgreSQL client
@@ -62,7 +64,26 @@ jobs:
         RAILS_ENV: test
       run: |
         bundler exec rspec
+#        npx update-browserslist-db@latest
+#        bundle exec rake webpacker:compile
 
+
+
+  # rubocop-test:
+  #   name: Rubocop
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - uses: ruby/setup-ruby@v1
+  #       with:
+  #         #ruby-version: ${{ env.RUBY_VERSION }}
+  #         ruby-version: 3.1.2
+  #         bundler-cache: true
+  #     - name: Install Rubocop & Check code
+  #       run: |
+  #         gem install rubocop
+  #         rubocop
+  #
   # simplecov-test:
   #   name: SimpleCov
   #   runs-on: ubuntu-latest
@@ -70,8 +91,8 @@ jobs:
   #     - uses: actions/checkout@v1
   #     - uses: ruby/setup-ruby@v1
   #       with:
-  #         ruby-version: ${{ env.RUBY_VERSION }}
+  #         ruby-version: 3.1.2
   #         bundler-cache: true
-    # - name: Download all workflow run artifacts
-    #   uses: actions/download-artifact@v2
-    #   if: always()
+  #     - name: Download all workflow run artifacts
+  #       uses: actions/download-artifact@v2
+  #       if: always()
